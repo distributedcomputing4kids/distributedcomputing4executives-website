@@ -1,0 +1,19 @@
+title: Distributed Computing 4 Kids
+description: Making distributed computing fun, accessible, and exciting for kids and curious minds everywhere!
+baseurl: ""
+url: ""
+
+# Launch date
+launch_date: "June 2026"
+
+# Build settings
+markdown: kramdown
+theme: null
+plugins: []
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor/
