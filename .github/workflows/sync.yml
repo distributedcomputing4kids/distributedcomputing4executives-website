@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Push to 4executives fork
         env:
@@ -25,5 +26,4 @@ jobs:
         run: |
           git remote add fork \
             https://x-access-token:${FORK_TOKEN}@github.com/distributedcomputing4kids/distributedcomputing4executives-website.git
-          git fetch fork main
-          git push fork HEAD:main --force-with-lease=main:refs/remotes/fork/main
+          git push fork HEAD:main --force
