@@ -1,0 +1,28 @@
+name: Sync Fork – 4executives
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every day at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Push main to 4executives fork
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout upstream repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to 4executives fork
+        env:
+          FORK_TOKEN: ${{ secrets.FORK_SYNC_TOKEN }}
+        run: |
+          git remote add fork \
+            https://x-access-token:${FORK_TOKEN}@github.com/4executives/distributedcomputing4kids-website.git
+          git push fork HEAD:main --force-with-lease
