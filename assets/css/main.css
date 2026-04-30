@@ -147,6 +147,29 @@ body {
   box-shadow: var(--shadow);
 }
 
+/* Better desktop vibes */
+@media (min-width: 1025px) {
+  .hero {
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-content {
+    max-width: min(100%, 2025px);
+    transform: translateY(-1rem);
+  }
+
+  .hero-title .title {
+    width: min(34vw, 920px);
+  }
+
+  .hero-subtitle {
+    font-size: 1.35rem;
+    max-width: 700px;
+    margin-bottom: 2rem;
+  }
+}
+
 /* Animated background nodes */
 .hero-bg {
   position: absolute;
