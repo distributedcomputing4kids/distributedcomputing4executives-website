@@ -68,7 +68,6 @@ body {
 
 .logo-icon {
   font-size: 1.75rem;
-  animation: spin-slow 12s linear infinite;
 }
 
 .logo-text {
@@ -81,6 +80,44 @@ body {
 .logo-accent {
   color: var(--color-primary);
 }
+
+.logo-amp {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+/* ---- Subscribe CTA ---- */
+.cta-wrapper {
+  margin: 0 auto 2.5rem;
+}
+
+.subscribe-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-yellow));
+  color: var(--color-bg);
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 0.9rem 2rem;
+  border-radius: 2rem;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.35);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.subscribe-btn:hover,
+.subscribe-btn:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.5);
+  outline: none;
+}
+
+.subscribe-btn:focus-visible {
+  outline: 2px solid var(--color-yellow);
+  outline-offset: 3px;
+}
+
+
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
@@ -99,6 +136,15 @@ body {
   background: radial-gradient(ellipse at 20% 40%, rgba(124, 58, 237, 0.25) 0%, transparent 60%),
               radial-gradient(ellipse at 80% 60%, rgba(255, 107, 53, 0.2) 0%, transparent 60%),
               var(--color-bg);
+}
+
+.hero-title .title {
+  display: block;
+  margin: 0 auto;
+  width: min(100%, 480px);
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 /* Animated background nodes */
