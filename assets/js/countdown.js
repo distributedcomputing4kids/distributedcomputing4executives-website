@@ -1,8 +1,8 @@
 /**
- * Countdown timer targeting June 20, 2026 (launch date)
+ * Countdown timer targeting July 20, 2026 (launch date)
  */
 (function () {
-  var launchDate = new Date("June 20, 2026 00:00:00").getTime();
+  var launchDate = new Date("July 20, 2026 00:00:00").getTime();
 
   var daysEl = document.getElementById("days");
   var hoursEl = document.getElementById("hours");

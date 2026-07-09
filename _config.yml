@@ -5,7 +5,7 @@ baseurl: ""
 url: ""
 
 # Launch date
-launch_date: "June 2026"
+launch_date: "July 2026"
 
 # Build settings
 markdown: kramdown
