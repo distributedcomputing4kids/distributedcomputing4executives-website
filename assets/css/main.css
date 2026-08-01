@@ -127,7 +127,10 @@ body {
 }
 
 .buy-btn-alt {
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+  /* Ends on a dark green rather than --color-accent (#06d6a0): white text
+     on the accent measures 1.9:1, far below WCAG's 4.5:1. #047857 keeps
+     white at ≥5.5:1 across the whole gradient run. */
+  background: linear-gradient(135deg, var(--color-secondary), #047857);
   color: var(--color-text);
   box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
 }
@@ -175,8 +178,6 @@ body {
 .subscribe-line a:focus {
   color: var(--color-text);
 }
-
-
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
