@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Coming Soon
-description: Distributed Computing 4 Kids (and Executives) – Making distributed computing fun and accessible for kids and curious minds everywhere. Launching July 2026!
+title: Get the Book
+description: Distributed Computing 4 Kids (and Executives) – Making distributed computing fun and accessible for kids, executives, and curious minds everywhere. Out now — including an Executive Edition sold only direct!
 ---
 
 <section class="hero">
@@ -17,9 +17,9 @@ description: Distributed Computing 4 Kids (and Executives) – Making distribute
   </div>
 
   <div class="hero-content">
-    <div class="badge">🚀 Coming July 2026</div>
+    <div class="badge">🎉 Out now — Executive Edition available!</div>
     <h1 class="hero-title">
-      <a href="{{ site.subscribe_url }}" target="_blank" rel="noopener">
+      <a href="{{ site.buy_executive_url }}">
         <img src="assets/imgs/scaled_cover.webp" alt="Distributed Computing for Kids and Executives Title Page" class="title" />
       </a>
     </h1>
@@ -28,49 +28,64 @@ description: Distributed Computing 4 Kids (and Executives) – Making distribute
       and <strong>exciting</strong> for kids, executives, and curious minds everywhere! 🌐
     </p>
 
-    <div class="cta-wrapper">
-      <a class="subscribe-btn" href="{{ site.subscribe_url }}" target="_blank" rel="noopener">
-        ✉️ Subscribe for updates
-      </a>
-    </div>
-
-    <div class="countdown-wrapper">
-      <p class="countdown-label">Launching in</p>
-      <div class="countdown" id="countdown">
-        <div class="countdown-unit">
-          <span class="countdown-num" id="days">--</span>
-          <span class="countdown-lbl">Days</span>
-        </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <span class="countdown-num" id="hours">--</span>
-          <span class="countdown-lbl">Hours</span>
-        </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <span class="countdown-num" id="minutes">--</span>
-          <span class="countdown-lbl">Minutes</span>
-        </div>
-        <div class="countdown-sep">:</div>
-        <div class="countdown-unit">
-          <span class="countdown-num" id="seconds">--</span>
-          <span class="countdown-lbl">Seconds</span>
-        </div>
+    <div class="buy-panel">
+      <div class="buy-buttons">
+        <a class="buy-btn" href="{{ site.buy_executive_url }}">
+          💼 Buy the Executive Edition — $34.42
+        </a>
+        <a class="buy-btn buy-btn-alt" href="{{ site.buy_direct_url }}">
+          📚 Standard paperback — $20
+        </a>
       </div>
+      <p class="buy-note">
+        The Executive Edition is a <strong>direct-store exclusive</strong>:
+        the same book with its own ISBN, measurably more executive, and the
+        best way to support work like this. Every print copy is
+        <strong>available signed on request</strong>. Prefer digital?
+        <a href="{{ site.buy_ebook_url }}">Get the DRM-free e-book (EPUB + PDF)
+        — pay what you want</a>.
+      </p>
+      <p class="retailer-line">
+        Also on Amazon: <a href="{{ site.amazon_paperback_url }}" rel="noopener">Paperback</a>
+        · <a href="{{ site.amazon_kindle_url }}" rel="noopener">Kindle</a>
+      </p>
+      <p class="subscribe-line">
+        <a href="{{ site.subscribe_url }}" target="_blank" rel="noopener">✉️ Subscribe for updates</a>
+      </p>
     </div>
   </div>
 </section>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Distributed Computing 4 Kids and Executives: Solving Hard Problems with Garden Gnomes and ASF Spark",
+  "author": { "@type": "Person", "name": "Holden Karau" },
+  "publisher": { "@type": "Organization", "name": "Pigs Can Fly Labs LLC" },
+  "inLanguage": "en",
+  "isbn": "9781960595003",
+  "datePublished": "2026-07-28",
+  "offers": [
+    { "@type": "Offer", "name": "Executive Edition paperback, direct exclusive", "price": "34.42", "priceCurrency": "USD", "url": "https://www.pigscanfly.ca/book/9781960595003", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Paperback, direct from the publisher", "price": "20.00", "priceCurrency": "USD", "url": "https://www.pigscanfly.ca/book/9781960595997", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "DRM-free e-book (EPUB + PDF), pay what you want", "price": "12.99", "priceCurrency": "USD", "url": "https://www.pigscanfly.ca/book/9781960595980", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Paperback on Amazon", "price": "20.00", "priceCurrency": "USD", "url": "https://www.amazon.com/dp/1960595016", "availability": "https://schema.org/InStock" },
+    { "@type": "Offer", "name": "Kindle edition on Amazon", "price": "12.99", "priceCurrency": "USD", "url": "https://www.amazon.com/dp/B0HC5Y42R2", "availability": "https://schema.org/InStock" }
+  ]
+}
+</script>
+
 <section class="features">
   <div class="features-inner">
-    <h2 class="features-title">What's Coming? 🎉</h2>
+    <h2 class="features-title">What's Inside? 🎉</h2>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧩</div>
         <h3>Fun Lessons</h3>
         <p>Learn how computers work together to solve hard problems.</p>
 	<p>You'll follow our friends, and their garden gnomes, on their adventures to use data to become influencers.</p>
-	<p>From their we'll introduce the Python (🐍) programming language, and look to see how we can give our gnome friends a well earned break.</p>
+	<p>From there we'll introduce the Python (🐍) programming language, and look to see how we can give our gnome friends a well earned break.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🤝</div>
