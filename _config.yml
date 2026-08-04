@@ -1,11 +1,28 @@
 title: Distributed Computing 4 Kids (and Executives)
 description: Making distributed computing fun, accessible, and exciting for kids and curious minds everywhere!
 subscribe_url: https://docs.google.com/forms/d/e/1FAIpQLSd_91ATGTGkrr_ip6GoVVigmYjj7UqjCabOdA1Lt_F7rtv1jQ/viewform?usp=publish-editor
-baseurl: ""
-url: ""
 
-# Launch date
-launch_date: "July 2026"
+# Where to buy, now that the book is out (July 2026).
+#
+# Direct-first on purpose: a sale through our own store keeps the customer
+# relationship (and more of the price) with us, so every primary CTA on the
+# site points at the pigscanfly.ca store and Amazon renders as the secondary
+# option. This site fronts the executive audience, so its hero leads with the
+# Executive Edition -- which is only sold direct, making the direct store not
+# just preferred but the only place that SKU exists. The /book/<isbn> URLs
+# are stable aliases served by the store that survive product ids changing;
+# do not swap them for /product/<pk> links.
+buy_direct_url: "https://www.pigscanfly.ca/book/9781960595997"
+buy_ebook_url: "https://www.pigscanfly.ca/book/9781960595980"
+buy_executive_url: "https://www.pigscanfly.ca/book/9781960595003"
+
+# Verified live Amazon listings (2026-08-01). The paperback /dp/ id is
+# Amazon's own print-run ISBN-10 (their KDP edition carries its own ISBN,
+# 9781960595010), so it deliberately does not match our print ISBN above.
+# The Kindle id is the ASIN from the Kindle listing's own page. The
+# Executive Edition has no Amazon listing, by design.
+amazon_paperback_url: "https://www.amazon.com/dp/1960595016"
+amazon_kindle_url: "https://www.amazon.com/dp/B0HC5Y42R2"
 
 # Build settings
 markdown: kramdown
