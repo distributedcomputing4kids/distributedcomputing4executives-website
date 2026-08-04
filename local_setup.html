@@ -1,0 +1,563 @@
+---
+layout: default
+title: Set Up Spark and Python on Your Computer
+description: Step-by-step instructions for installing PySpark 4.2, Python, and Java on Mac, Linux, and Windows, so you can run the Distributed Computing 4 Kids (and Executives) notebooks on your own machine.
+---
+
+<article class="doc">
+  <div class="doc-inner">
+
+    <header class="doc-header">
+      <div class="badge">💻 Setup on your own computer</div>
+      <h1 class="doc-title">Get Spark and Python running on your computer</h1>
+      <p class="doc-lede">
+        You'll want a <strong>Spark and Python notebook</strong> to follow along with the book.
+        Installing Spark has a lot of steps, so <strong>find somebody to do it with</strong> — a
+        colleague, a friend, the kid you bought the other edition for. Two people staring at the
+        same confusing error message is much better than one.
+      </p>
+    </header>
+
+    <div class="doc-body">
+
+      <div class="callout callout-heads-up">
+        <p><span class="callout-title">First things first: you need an actual computer for this page. 🖥️</span>
+        A Mac, a Windows PC, or a Linux machine — something with a keyboard, a screen, and a
+        <em>terminal</em> you can type commands into. Everything on this page happens by typing
+        commands, so a phone or tablet is not going to work.</p>
+        <ul>
+          <li><strong>iPad or iPhone?</strong> Spark can't run here. There's no Java for iOS, and
+          Apple doesn't allow the kind of program that would install it. That is not a you
+          problem, it's just how those devices work. Head to the
+          <a href="{{ '/cloud_setup.html' | relative_url }}">cloud notebook page</a> instead — it
+          runs in a web browser, so an iPad with a keyboard is fine.</li>
+          <li><strong>Android phone or tablet?</strong> Newer Android versions do hide a Linux
+          Terminal in Settings → System → Developer options → "Linux development environment", and
+          a determined person can get Spark going in there. But it's slow and awkward and not a
+          good first adventure. The <a href="{{ '/cloud_setup.html' | relative_url }}">cloud
+          notebook page</a> is a much better use of your afternoon.</li>
+          <li><strong>Chromebook?</strong> Most can do it, but you have to switch on the Linux
+          feature first — Settings → About ChromeOS → Developers → <strong>Linux development
+          environment</strong> → Set up. Then open the Terminal app it gives you and follow the
+          <a href="#linux">Linux instructions</a> below. Two catches: managed Chromebooks — work
+          or school — often have this switched off and only an administrator can turn it back on,
+          and small or older Chromebooks will struggle. In either case, the
+          <a href="{{ '/cloud_setup.html' | relative_url }}">cloud</a> will be much happier.</li>
+        </ul>
+      </div>
+
+      <div class="callout callout-grownup">
+        <p><span class="callout-title">Getting stuck here is normal. 💛</span>
+        Installing Spark has an unreasonable number of steps, and people who do this for a living
+        still hit strange errors on a fresh laptop. It's a good part of why companies pay somebody
+        else to run Spark for them — if you have ever wondered what exactly you are buying from a
+        managed Spark vendor, this page is a fair sample of it. Getting stuck is the ordinary
+        outcome, not a sign you did anything wrong.</p>
+        <p>If this page starts to feel like a fight, just stop and
+        <a href="{{ '/cloud_setup.html' | relative_url }}">use a cloud notebook instead</a>.
+        That takes about ten minutes, and the code in the book is identical either way.</p>
+      </div>
+
+      <h2 id="what">What are we installing, and why? 🧩</h2>
+
+      <p>Spark is the program that splits a big job up across lots of computers — the same
+      trick as getting every classroom to count their own results instead of one poor person
+      counting the whole school district. To run it on <em>one</em> computer we need three
+      things:</p>
+
+      <ul>
+        <li><strong>Python</strong> 🐍 — the language we write our programs in. We'll install it
+        with <em>conda</em>, which keeps this project's Python in its own tidy box, separate from
+        anything else on the computer.</li>
+        <li><strong>Java</strong> ☕ — Spark itself is written in Java and Scala, so even though
+        we type Python, Java has to be there underneath. This is the step people forget most
+        often, and it causes the most confusing error messages.</li>
+        <li><strong>PySpark and JupyterLab</strong> — PySpark is the Python flavour of Spark, and
+        JupyterLab is the notebook where we type code and see answers appear. We use PySpark
+        <strong>4.2</strong> throughout the book, so that's the version we ask for.</li>
+      </ul>
+
+      <p>Plan for about <strong>20–40 minutes</strong>, most of it waiting for downloads. You'll
+      need a Mac, Windows, or Linux computer with roughly <strong>5 GB of free disk space</strong>
+      and an internet connection.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Worth knowing before you start 🧠</span>
+        Spark on one computer is <em>slower</em> than plain Python, and that won't be a mistake in
+        your setup. Spark spends real effort planning work and splitting it up, and that effort
+        only pays for itself once the data is bigger than one machine can hold. We install it here
+        to learn the ideas, not to go fast. If you remember one thing about Spark, make it this
+        one: the overhead is the price of being able to add more computers later.</p>
+      </div>
+
+      <h2 id="pick">Pick your computer 👇</h2>
+
+      <div class="pick-grid">
+        <a class="pick-card" href="#mac">
+          <span class="pick-icon">🍎</span>
+          <span class="pick-name">Mac</span>
+          <span class="pick-note">Miniforge, or Homebrew if you already have it</span>
+        </a>
+        <a class="pick-card" href="#linux">
+          <span class="pick-icon">🐧</span>
+          <span class="pick-name">Linux</span>
+          <span class="pick-note">Miniforge, or your own package manager</span>
+        </a>
+        <a class="pick-card" href="#windows">
+          <span class="pick-icon">🪟</span>
+          <span class="pick-name">Windows</span>
+          <span class="pick-note">One extra awkward bit at the end — we'll walk you through it</span>
+        </a>
+      </div>
+
+      <p>Then everybody meets back up at <a href="#test">testing that it worked</a> and
+      <a href="#notebook">starting the notebook</a>.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">How to read a terminal (60 seconds, worth it) 🖥️</span>
+        Everything below happens in a <strong>terminal</strong> — a window where you type commands
+        instead of clicking. A few things nobody ever tells you:</p>
+        <ul>
+          <li>The <strong>prompt</strong> is the little bit of text sitting at the left edge,
+          waiting for you. It might look like <code>yourname@laptop ~ %</code> or just
+          <code>$</code>. If you can see the prompt, the terminal is ready for your next command.
+          If it's gone, something is still running — wait for it to come back.</li>
+          <li>"<strong>Run this</strong>" means: type the line, then press <strong>Enter</strong>.
+          One line at a time, Enter after each one. Nothing happens until you press Enter.</li>
+          <li>You can <strong>copy and paste</strong> instead of typing, which is much safer for
+          long commands. Paste is <code>⌘</code>+V on a Mac, <strong>Ctrl+Shift+V</strong> in most
+          Linux terminals, and Ctrl+V or a right-click on Windows.</li>
+          <li>Terminals print a <strong>lot</strong> of text, and some of it is red or says
+          <code>WARNING</code>. That's normal. Red text is only a problem if the thing you asked
+          for didn't happen.</li>
+          <li>Nothing on this page can break the computer. The worst that happens is an error
+          message, and an error message is just the computer telling you what it needs.</li>
+        </ul>
+      </div>
+
+      <h2 id="mac">🍎 Instructions for Mac</h2>
+
+      <p>Open the <strong>Terminal</strong> app: press <code>⌘</code>+Space, type "Terminal",
+      press Enter. Commands go in that black-and-white window.</p>
+
+      <h3>Step 1: install conda</h3>
+
+      <p>We recommend <strong>Miniforge</strong>: a small, community-run conda that's free for
+      everybody, including at work. (The better-known Anaconda installer now needs a paid licence
+      at larger organisations. Miniforge skips that entire conversation.)</p>
+
+      <p><em>If you already have Homebrew</em> (type <code>brew --version</code> to find out),
+      it's two lines — the second one wires conda into your shell, which the first one doesn't
+      do on its own:</p>
+
+      <pre><code>brew install --cask miniforge
+conda init zsh</code></pre>
+
+      <p>Then <strong>close Terminal and open it again</strong>. You'll know it worked when the
+      prompt has <code>(base)</code> at the front, like <code>(base) yourname@laptop ~ %</code> —
+      and you can jump straight to <a href="#mac-step2">Step 2</a>.</p>
+
+      <p><em>If you don't have Homebrew, that's fine</em> — you don't need it. Run these two lines
+      instead. They work out which Mac you have on their own, so there's nothing to choose:</p>
+
+      <pre><code>curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh</code></pre>
+
+      <p>That second line starts an installer which asks you three things, and this is where
+      everybody gets stuck:</p>
+
+      <ol class="steps">
+        <li>"Please, press ENTER to continue" — press Enter.</li>
+        <li>A huge wall of legal text scrolls past. Tap the <strong>space bar</strong> to page
+        through it, or press <code>q</code> to jump straight to the end. It is very long. It's
+        supposed to be.</li>
+        <li>"Do you accept the license terms?" — type the whole word <code>yes</code> and press
+        Enter. Just <code>y</code> won't do for this one. Then it asks whether to initialize
+        conda: <code>yes</code> again, Enter.</li>
+      </ol>
+
+      <p>When it finishes, <strong>close Terminal and open it again</strong> — conda isn't
+      switched on until you do. You'll know it worked when the prompt has <code>(base)</code> at
+      the front, like <code>(base) yourname@laptop ~ %</code>.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Prefer clicking to typing? 🖱️</span>
+        Miniforge also ships a normal double-click installer for macOS — grab the <code>.pkg</code>
+        file for your Mac from
+        <a href="https://conda-forge.org/download/" target="_blank" rel="noopener">conda-forge.org/download</a>.
+        Afterwards, run <code>conda init zsh</code> in Terminal once so conda switches itself on,
+        then close and reopen Terminal.</p>
+      </div>
+
+      <h3 id="mac-step2">Step 2: make a home for the project</h3>
+
+      <p>This creates a little sandbox called <code>dc4k</code> with its own Python
+      <em>and</em> its own Java, so nothing we do here can break anything else on the
+      computer.</p>
+
+      <pre><code>conda create -n dc4k -c conda-forge python=3.12 openjdk=21
+conda activate dc4k</code></pre>
+
+      <p>It lists a screenful of packages and then asks <code>Proceed ([y]/n)?</code> — type the
+      letter <code>y</code> and press Enter. (Anything in a terminal offering you
+      <code>[y]/n</code> works this way: one letter, then Enter. The one in square brackets is what
+      you get if you just press Enter without typing anything.) Downloading takes a few minutes.
+      When your prompt comes back it should say <code>(dc4k)</code> at the front instead of
+      <code>(base)</code>.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Remember this one line 📌</span>
+        <code>conda activate dc4k</code> — every new Terminal window starts out forgetful, so
+        you have to type that before running Spark. It's the single most common reason things
+        "suddenly stop working" tomorrow.</p>
+      </div>
+
+      <h3>Step 3: install PySpark and the notebook</h3>
+
+      <pre><code>pip install --upgrade "pyspark[sql]==4.2.*" jupyterlab pandas</code></pre>
+
+      <p>That installs PySpark 4.2. It's a biggish download — a few hundred megabytes — so this is
+      an excellent moment to go get a snack. 🍪 It scrolls a lot of text, and it may sit completely
+      still for a minute at a time. That's normal, so don't press anything. You'll know it finished
+      when you see a line starting <code>Successfully installed</code> and your prompt comes
+      back.</p>
+
+      <p>Now skip down to <a href="#test">testing that it worked</a>.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Homebrew-only alternative 🍺</span>
+        If you'd rather not use conda at all, <code>brew install openjdk@21</code> plus
+        <code>brew install python</code> also works. Two things to know. First, link the Java
+        install so Spark can find it — Homebrew prints the exact <code>sudo ln -sfn …</code>
+        command to run when it finishes, so copy that. Second, you can't
+        <code>pip install</code> into Homebrew's Python directly, so make a virtual environment
+        first:</p>
+        <pre><code>python3 -m venv ~/dc4k
+source ~/dc4k/bin/activate
+pip install --upgrade "pyspark[sql]==4.2.*" jupyterlab pandas</code></pre>
+        <p>We still suggest conda, because it keeps Python and Java together, tells Spark where
+        Java is without you having to, and doesn't touch the rest of your Mac.</p>
+      </div>
+
+      <h2 id="linux">🐧 Instructions for Linux</h2>
+
+      <p>Open a terminal — on most systems Ctrl+Alt+T does it. If that does nothing, search your
+      applications for "Terminal" or "Console".</p>
+
+      <h3>Step 1: install conda</h3>
+
+      <pre><code>curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh</code></pre>
+
+      <p>Press Enter at the first prompt, then space-bar through the licence (or press
+      <code>q</code> to skip to the end), then type the whole word <code>yes</code> to accept it
+      and <code>yes</code> again when it offers to initialize conda. Then <strong>close the
+      terminal and open a new one</strong>. The prompt should now start with
+      <code>(base)</code>.</p>
+
+      <h3>Step 2: make a home for the project</h3>
+
+      <pre><code>conda create -n dc4k -c conda-forge python=3.12 openjdk=21
+conda activate dc4k</code></pre>
+
+      <p>Type <code>y</code> and press Enter when it asks <code>Proceed ([y]/n)?</code>. When the
+      prompt comes back it changes from <code>(base)</code> to <code>(dc4k)</code>. You'll need to
+      type <code>conda activate dc4k</code> in every new terminal window from now on.</p>
+
+      <h3>Step 3: install PySpark and the notebook</h3>
+
+      <pre><code>pip install --upgrade "pyspark[sql]==4.2.*" jupyterlab pandas</code></pre>
+
+      <p>Wait for <code>Successfully installed</code> and your prompt to come back.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Prefer your own package manager? 📦</span>
+        That works too. These commands start with <code>sudo</code>, which means "do this as the
+        boss of the computer" — it's installing software for everyone who uses the machine, so it
+        asks for your password first. <strong>Your password will not appear as you type it, not
+        even as dots.</strong> That's deliberate, not a broken keyboard: type it and press Enter.
+        (<em>JDK</em> is just the long name for Java.)</p>
+        <p>Install a JDK and pip with
+        <code>sudo apt install openjdk-21-jdk python3-pip python3-venv</code> (Debian/Ubuntu),
+        <code>sudo dnf install java-21-openjdk-devel python3-pip</code> (Fedora — it dropped its
+        Java 17 packages in Fedora 42, so 21 is the one to ask for), or
+        <code>sudo pacman -S jdk21-openjdk python-pip</code> (Arch). If your system says it can't
+        find Java 21, you're on an older release — ask for <code>openjdk-17-jdk</code> instead, which
+        Spark 4.2 is equally happy with. Then use a plain virtual environment:</p>
+        <pre><code>python3 -m venv ~/dc4k
+source ~/dc4k/bin/activate
+pip install --upgrade "pyspark[sql]==4.2.*" jupyterlab pandas</code></pre>
+        <p>Just don't <code>pip install</code> straight into the system Python — newer
+        distributions block that on purpose, and they're right to.</p>
+      </div>
+
+      <h2 id="windows">🪟 Instructions for Windows</h2>
+
+      <div class="callout">
+        <p><span class="callout-title">A shortcut worth knowing about 🧭</span>
+        Spark was born on Linux and is happiest there, so the smoothest path on Windows 10 or 11 is
+        often the Windows Subsystem for Linux. Right-click the Start button, choose
+        <em>Terminal (Admin)</em>, run <code>wsl --install</code>, and let it work — it prints a
+        lot and then wants you to restart the computer. After the restart, open the "Ubuntu" app
+        from the Start menu and follow the <a href="#linux">Linux instructions</a> inside it.</p>
+        <p>This route also skips <a href="#winutils">step 4</a> below entirely, which is the part
+        of Windows Spark that nobody enjoys. If it sounds like too much, the native Windows steps
+        work fine.</p>
+      </div>
+
+      <h3>Step 1: install conda</h3>
+
+      <p>Download the Miniforge installer for Windows from
+      <a href="https://conda-forge.org/download/" target="_blank" rel="noopener">conda-forge.org/download</a>
+      and run it. Accept the defaults, and install it "Just Me" into a path with
+      <strong>no spaces in it</strong> — the default,
+      <code>C:\Users\yourname\miniforge3</code>, is perfect. Spaces in paths confuse Spark.</p>
+
+      <p>When it's done, open <strong>Miniforge Prompt</strong> from the Start menu. That's the
+      window you'll use for everything below — <em>not</em> the regular Command Prompt or
+      PowerShell, because conda is only switched on inside this one.</p>
+
+      <h3>Step 2: make a home for the project</h3>
+
+      <pre><code>conda create -n dc4k -c conda-forge python=3.12 openjdk=21
+conda activate dc4k</code></pre>
+
+      <p>Type <code>y</code> and press Enter when it asks <code>Proceed ([y]/n)?</code>. The
+      prompt should change to say <code>(dc4k)</code>.</p>
+
+      <h3>Step 3: install PySpark and the notebook</h3>
+
+      <pre><code>pip install --upgrade "pyspark[sql]==4.2.*" jupyterlab pandas</code></pre>
+
+      <p>Wait for <code>Successfully installed</code> and your prompt to come back.</p>
+
+      <h3 id="winutils">Step 4: the awkward Windows bit (winutils)</h3>
+
+      <p>On Windows, Spark wants two little Hadoop helper files that it doesn't ship with, and
+      nobody has ever fixed this properly — so we do it by hand. Without them Spark usually still
+      starts, then prints a wall of red and refuses to save anything. Sorry. Here's how to give it
+      what it wants:</p>
+
+      <ol class="steps">
+        <li>Make a folder called <code>C:\hadoop\bin</code>.</li>
+        <li>Download <code>winutils.exe</code> and <code>hadoop.dll</code> from the
+        <a href="https://github.com/cdarlint/winutils" target="_blank" rel="noopener">cdarlint/winutils</a>
+        collection on GitHub. Pick the folder with the <strong>highest version number</strong>
+        available, open its <code>bin</code> folder, then click each file and press the
+        <strong>Download raw file</strong> button — the small downward arrow near the top right.
+        GitHub shows you a preview page first, so don't worry when the first click doesn't seem to
+        download anything. Windows may also warn you about downloading an <code>.exe</code>;
+        choose <em>Keep</em>.</li>
+        <li>Put both files in <code>C:\hadoop\bin</code>.</li>
+        <li>Tell Windows where they are. This step sounds alarming because Windows calls it
+        "system settings", but all you're doing is writing down a folder name so Spark can find it
+        — you can delete it again later and nothing will mind. Press Start, type "environment
+        variables", and choose <em>Edit the system environment variables</em> →
+        <em>Environment Variables</em>. Under "User variables" click <em>New</em> and add a
+        variable named <code>HADOOP_HOME</code> with the value <code>C:\hadoop</code>. Then find
+        <code>Path</code> in that same list, click <em>Edit</em> → <em>New</em>, and add
+        <code>C:\hadoop\bin</code>.</li>
+        <li>Close the Miniforge Prompt and open a new one so it notices the change. Don't forget
+        <code>conda activate dc4k</code> again.</li>
+      </ol>
+
+      <div class="callout callout-heads-up">
+        <p><span class="callout-title">Two honest warnings ⚠️</span>
+        Only download these files from a source you trust, and never run an installer for them
+        that asks for administrator rights — these are just two small files that get copied into a
+        folder, nothing more.</p>
+        <p>Also: Spark 4.2 actually ships Hadoop 3.5, and nobody publishes matching Windows
+        binaries for that yet, so the newest files you can get are a little older than Spark
+        expects. It normally works anyway. If you still get errors mentioning
+        <code>UnsatisfiedLinkError</code> after doing all of the above, that mismatch is why — and
+        the <a href="#windows">WSL route</a> at the top of this section is the reliable fix.</p>
+      </div>
+
+      <h2 id="test">Testing that it worked (everyone) 🧪</h2>
+
+      <p>In your terminal, with <code>(dc4k)</code> showing in the prompt, run:</p>
+
+      <pre><code>pyspark --version</code></pre>
+
+      <p>You should see the word <code>Spark</code> drawn out big using slashes and underscores
+      (that's Spark showing off), a version number starting with <code>4.2</code>, and a line
+      naming the Java it found. If you see that, Java and Spark have found each other and the hard
+      part is over. 🎉</p>
+
+      <div class="callout callout-win">
+        <p><span class="callout-title">Version 4.2, or: 42 with a dot in it 🌌</span>
+        Which means we are working with the Spark release that answers life, the universe, and
+        everything. We pin the book to 4.2 on purpose, so the version on your screen matches the
+        version in the chapters instead of drifting every few months. If you ever need to check
+        later, <code>pyspark --version</code> is how.</p>
+      </div>
+
+      <p>Now let's actually compute something. Start the interactive shell:</p>
+
+      <pre><code>pyspark</code></pre>
+
+      <p>Wait for the <code>&gt;&gt;&gt;</code> prompt. It can take 20 seconds and print some
+      warnings along the way — warnings are fine, that's just Spark talking to itself. Just
+      above the prompt it should say <code>SparkSession available as 'spark'</code>, which is
+      Spark handing you a ready-made variable called <code>spark</code>. Then run:</p>
+
+      <pre><code>spark.range(1000000).filter("id % 7 == 0").count()</code></pre>
+
+      <p>It should think for a moment and answer <code>142858</code>.</p>
+
+      <p>Where does that number come from? There are 142,857 multiples of seven under a million —
+      and <code>142857 × 7 = 999999</code>, which is one of the tidiest facts in arithmetic — and
+      then zero counts too, because zero divides by everything. So: 142,858.</p>
+
+      <div class="callout callout-win">
+        <p><span class="callout-title">You just did distributed computing! 🏆</span>
+        That was Spark splitting a million numbers across all the cores in your computer and
+        adding up the answers — the exact same trick it uses to split work across a thousand
+        computers. Your gnomes would be proud. Type <code>exit()</code> to quit.</p>
+      </div>
+
+      <h2 id="notebook">Starting the notebook (everyone) 📓</h2>
+
+      <p>The book uses notebooks, which are much nicer than the shell: you can edit, re-run, and
+      keep your work. In the terminal:</p>
+
+      <pre><code>conda activate dc4k
+jupyter lab</code></pre>
+
+      <p>Two things happen. First, the terminal fills with text and then <em>stops giving you a
+      prompt back</em>. It isn't frozen — that's JupyterLab running, and it has to keep running the
+      whole time you use the notebook, so leave that window open and alone. Second, your web
+      browser opens with JupyterLab in it. (If no browser opens, find the line in the terminal
+      starting <code>http://localhost:8888/lab?token=</code> and copy that whole line into your
+      browser's address bar.)</p>
+
+      <p>Click <em>Python 3</em> under "Notebook" to make a new one. A notebook is a stack of boxes
+      called <strong>cells</strong>: you type code in a cell, then press
+      <strong>Shift+Enter</strong> (hold Shift down, press Enter) to run it, and the answer appears
+      underneath. Click the first cell, type this, and press Shift+Enter:</p>
+
+      <pre><code>from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("dc4k").getOrCreate()
+spark.range(1000000).filter("id % 7 == 0").count()</code></pre>
+
+      <p>You should get <code>142858</code> again, this time inside the notebook. That's the whole
+      setup done — the rest of the book is the fun part.</p>
+
+      <div class="callout">
+        <p><span class="callout-title">Secret bonus: watch Spark work 👀</span>
+        While a notebook is running, open
+        <a href="http://localhost:4040" target="_blank" rel="noopener">localhost:4040</a> in
+        another browser tab to see Spark's own dashboard. Engineers call this the <strong>Spark
+        UI</strong>, and it's what they're staring at when they say a job is stuck on a stage. It
+        shows the work being chopped into pieces in real time, and it is genuinely fun to
+        watch.</p>
+        <p>To stop the notebook, go back to the terminal and press Ctrl+C twice. (On Windows, once
+        is enough.)</p>
+      </div>
+
+      <h2 id="trouble">When things go wrong 🔧</h2>
+
+      <p>Almost everyone hits at least one of these. Nothing on this list means the computer is
+      broken.</p>
+
+      <dl class="trouble">
+
+        <dt><code>conda: command not found</code> (or "not recognized")</dt>
+        <dd>The installer finished but the terminal hasn't noticed yet. Close every terminal
+        window and open a fresh one. On Windows, use <strong>Miniforge Prompt</strong> from the
+        Start menu, not Command Prompt or PowerShell.</dd>
+
+        <dt><code>No such file or directory</code> right after downloading Miniforge</dt>
+        <dd>The file isn't named what the command expected. Run <code>ls Miniforge3*</code> (Mac
+        and Linux) to see its real name, then use that name. If you downloaded it with a browser
+        instead of the terminal, it's probably in your Downloads folder, so try
+        <code>ls ~/Downloads/Miniforge3*</code>.</dd>
+
+        <dt><code>JAVA_HOME is not set</code>, or <code>Unable to locate a Java Runtime</code></dt>
+        <dd>Java isn't installed, or Spark can't see it. Inside your conda environment, run
+        <code>conda install -c conda-forge openjdk=21</code> and try again. Check what you've got
+        with <code>java -version</code> — Spark 4.2 runs on Java 17, 21, or 25, and we install
+        21.</dd>
+
+        <dt><code>UnsupportedClassVersionError</code>, or a complaint about "class file version"</dt>
+        <dd>The Java that's installed is <em>too old</em> for this version of Spark. Install a
+        newer one: <code>conda install -c conda-forge openjdk=21</code>.</dd>
+
+        <dt><code>TypeError: 'JavaPackage' object is not callable</code></dt>
+        <dd>Almost always the same problem wearing a disguise — Python found PySpark but not a
+        usable Java. Fix Java as above.</dd>
+
+        <dt><code>error: externally-managed-environment</code> from pip</dt>
+        <dd>You're trying to install into the computer's own Python, which modern systems protect
+        on purpose. Activate your conda environment first
+        (<code>conda activate dc4k</code>), or make a virtual environment as described in the
+        Linux section.</dd>
+
+        <dt>A very long red <code>Py4JJavaError</code> wall of text</dt>
+        <dd>Don't panic, and don't read all of it. Scroll to the <strong>top</strong> of the
+        message: the first line or two is the real cause, and everything below it is Spark
+        explaining where it was standing when things went wrong.</dd>
+
+        <dt>macOS: "Do you want the application to accept incoming network connections?"</dt>
+        <dd>Click <strong>Allow</strong>. Spark's pieces talk to each other over the network even
+        when they're all on the one computer. Nothing is leaving your machine.</dd>
+
+        <dt>Windows: errors mentioning <code>winutils</code>, <code>NativeIO</code>, or
+        <code>UnsatisfiedLinkError</code></dt>
+        <dd>That's <a href="#winutils">step 4</a>. Check that both files really are in
+        <code>C:\hadoop\bin</code>, that <code>HADOOP_HOME</code> is set to
+        <code>C:\hadoop</code> (with no <code>\bin</code> on the end), and that you opened a
+        brand new prompt afterwards. If it still complains, it's the Hadoop version mismatch
+        described in step 4, and <a href="#windows">WSL</a> is the way out.</dd>
+
+        <dt><code>Address already in use</code>, or port 4040 is busy</dt>
+        <dd>An older Spark is still running somewhere. Close other notebooks and terminals — or
+        just ignore it, because Spark will quietly move itself to port 4041.</dd>
+
+        <dt>The notebook can't find PySpark, even though you installed it</dt>
+        <dd>The notebook is probably running from a different Python. Quit it, run
+        <code>conda activate dc4k</code>, and start <code>jupyter lab</code> again from that same
+        window. Inside a notebook, <code>import sys; print(sys.executable)</code> should show a
+        path with <code>dc4k</code> in it.</dd>
+
+        <dt>A complaint that <code>PyArrow</code> must be installed</dt>
+        <dd>Something in the book asked Spark to hand data to pandas, which needs an extra piece.
+        Run <code>pip install --upgrade "pyspark[sql]==4.2.*"</code> — the <code>[sql]</code> part
+        is what brings it along.</dd>
+
+        <dt>Everything is just… <em>slow</em></dt>
+        <dd>On one computer, Spark spends a lot of effort organizing work that a plain Python
+        loop would finish instantly. That's expected, and it's the whole point of the note near the
+        top of this page. Spark's superpower only shows up when the data is bigger than one
+        machine.</dd>
+
+        <dt>Nothing on this list helps</dt>
+        <dd>Then stop. Local Spark installs go wrong in ways nobody has catalogued yet, and losing
+        a whole evening to one is a bad trade. Use a
+        <a href="{{ '/cloud_setup.html' | relative_url }}">cloud notebook</a> instead — the code in
+        the book is identical either way, and it's about ten minutes of clicking.</dd>
+
+      </dl>
+
+      <h2 id="next-time">Starting up next time ⏭️</h2>
+
+      <p>Good news: once it's installed, getting going again is just two lines.</p>
+
+      <pre><code>conda activate dc4k
+jupyter lab</code></pre>
+
+      <nav class="doc-next" aria-label="Where to next">
+        <a href="{{ '/cloud_setup.html' | relative_url }}">
+          <span class="doc-next-lbl">Rather not install anything?</span>
+          <span class="doc-next-txt">☁️ Use a cloud notebook →</span>
+        </a>
+        <a href="{{ '/' | relative_url }}">
+          <span class="doc-next-lbl">Back to</span>
+          <span class="doc-next-txt">🏠 Distributed Computing 4 Kids (and Executives)</span>
+        </a>
+      </nav>
+
+    </div>
+  </div>
+</article>
