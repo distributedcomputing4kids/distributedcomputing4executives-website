@@ -1,8 +1,13 @@
 <header class="site-header">
   <div class="header-inner">
-    <div class="logo">
+    <a class="logo" href="{{ '/' | relative_url }}">
       <span class="logo-icon">🐍🍄💻💻💻💻💻</span>
       <span class="logo-text">DC<span class="logo-accent">4</span>Kids</span>
-    </div>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+      <a href="{{ '/local_setup.html' | relative_url }}"{% if page.url == '/local_setup.html' %} aria-current="page"{% endif %}>💻 <span class="nav-wide">On your computer</span><span class="nav-narrow">Computer</span></a>
+      <a href="{{ '/cloud_setup.html' | relative_url }}"{% if page.url == '/cloud_setup.html' %} aria-current="page"{% endif %}>☁️ <span class="nav-wide">In the cloud</span><span class="nav-narrow">Cloud</span></a>
+    </nav>
   </div>
 </header>
